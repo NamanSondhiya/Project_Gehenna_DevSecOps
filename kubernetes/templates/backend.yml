@@ -32,11 +32,11 @@ spec:
             secretKeyRef:
               name: gehenna-secrets
               key: MONGO_URL
-        envFrom:
-        - configMapRef:
-            name: gehenna-config
-        - secretRef:
-            name: gehenna-secrets
+        # envFrom:
+        # - configMapRef:
+        #     name: gehenna-config
+        # - secretRef:
+        #     name: gehenna-secrets
 ---
 apiVersion: v1
 kind: Service
