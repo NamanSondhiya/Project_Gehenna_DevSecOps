@@ -71,6 +71,6 @@ spec:
   ports:
   - port: 8081
     targetPort: 8081
-    nodePort: {{ .Values.MEPort }}
+    # nodePort: {{ .Values.MEPort }}
   type: {{ .Values.MEsvc }}
 

@@ -15,7 +15,7 @@ spec:
       initContainers:
       - name: wait-for-backend
         image: busybox
-        command: ["sh", "-c", "until nc -z gehenna-backend 8002; do echo waiting for backend; sleep 3; done"]
+        command: ['sh', '-c', 'until wget --quiet --tries=1 --spider http://gehenna-backend.{{ .Values.namespace }}.svc.cluster.local:8002/health; do echo waiting for backend; sleep 3; done']
       containers:
         - name: gehenna-frontend
           image: {{ .Values.frontendImage }}
