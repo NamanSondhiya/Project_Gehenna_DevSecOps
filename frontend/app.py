@@ -17,7 +17,7 @@ def index():
         names = response.json()
     except:
         names = []
-    return render_template('index.html', data=names)
+    return render_template('index.html', data=names, backend_url=BACKEND_URL)
 
 @app.route('/health')
 def health():

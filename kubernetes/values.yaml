@@ -1,6 +1,6 @@
 namespace: gehenna
 
-frontendImage: docker.io/namanss/gehenna-frontend-ii:4.0
+frontendImage: docker.io/namanss/gehenna-frontend-ii:4.1
 frontendsvc: NodePort
 FNodePort: 30888
 
