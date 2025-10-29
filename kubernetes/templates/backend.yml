@@ -12,6 +12,9 @@ spec:
       labels:
         app: gehenna-backend
     spec:
+      initContainer:
+      - name: wait-for-mongo
+        command: ['sh', '-c', 'until nc -z mongo 27017; do echo waiting for mongo; sleep 3; done']
       containers:
       - name: gehenna-backend
         image: {{ .Values.backendImage }}
