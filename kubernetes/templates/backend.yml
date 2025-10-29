@@ -13,43 +13,66 @@ spec:
         app: gehenna-backend
     spec:
       initContainers:
-      - name: wait-for-mongo
-        image: {{ .Values.mongoImage }}
-        command:
-          - sh
-          - -c
-          - |
-            until mongo --host mongo \
-                        --port 27017 \
-                        --username "$MONGO_INITDB_ROOT_USERNAME" \
-                        --password "$MONGO_INITDB_ROOT_PASSWORD" \
-                        --authenticationDatabase admin \
-                        --eval "db.adminCommand('ping')" >/dev/null 2>&1; do
-              echo "waiting for mongo"
-              sleep 3
-            done
-            echo "MongoDB is up!"
+        - name: wait-for-mongo
+          image: {{ .Values.mongoImage }}
+          # env:
+          #   - name: MONGO_INITDB_ROOT_USERNAME
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: gehenna-secrets
+          #         key: MONGO_USERNAME
+          #   - name: MONGO_INITDB_ROOT_PASSWORD
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: gehenna-secrets
+          #         key: MONGO_PASSWORD
+
+          command:
+            - sh
+            - -c
+            - |
+              until mongosh --host mongo \
+                          --port 27017 \
+                          --username "$MONGO_INITDB_ROOT_USERNAME" \
+                          --password "$MONGO_INITDB_ROOT_PASSWORD" \
+                          --authenticationDatabase admin \
+                          --eval "db.adminCommand('ping')" >/dev/null 2>&1; do
+                echo "waiting for mongo"
+                sleep 3
+              done
+              echo "MongoDB is up!"
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: gehenna-secrets
+                  key: MONGO_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gehenna-secrets
+                  key: MONGO_PASSWORD
       containers:
-      - name: gehenna-backend
-        image: {{ .Values.backendImage }}
-        ports:
-        - containerPort: 8002
-        env:
-        - name: PORT
-          valueFrom:
-            configMapKeyRef:
-              name: gehenna-config
-              key: BACKEND_PORT
-        - name: MONGO_URL
-          valueFrom:
-            secretKeyRef:
-              name: gehenna-secrets
-              key: MONGO_URL
-        # envFrom:
-        # - configMapRef:
-        #     name: gehenna-config
-        # - secretRef:
-        #     name: gehenna-secrets
+        - name: gehenna-backend
+          image: {{ .Values.backendImage }}
+          ports:
+            - containerPort: 8002
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: gehenna-config
+                  key: BACKEND_PORT
+            - name: MONGO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: gehenna-secrets
+                  key: MONGO_URL
+          # envFrom:
+          # - configMapRef:
+          #     name: gehenna-config
+          # - secretRef:
+          #     name: gehenna-secrets
 ---
 apiVersion: v1
 kind: Service
@@ -60,7 +83,6 @@ spec:
   selector:
     app: gehenna-backend
   ports:
-  - port: 8002
-    targetPort: 8002
+    - port: 8002
+      targetPort: 8002
   type: ClusterIP
-
