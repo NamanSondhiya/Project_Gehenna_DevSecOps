@@ -15,7 +15,20 @@ spec:
       initContainers:
       - name: wait-for-mongodb
         image: busybox
-        command: ['sh', '-c', 'until nc -z mongo 27017; do echo waiting for mongo; sleep 3; done']
+        command: 
+          - sh
+          - -c
+          - |
+            until mongo --host mongo \
+                        --port 27017 \
+                        --username "$MONGO_INITDB_ROOT_USERNAME" \
+                        --password "$MONGO_INITDB_ROOT_PASSWORD" \
+                        --authenticationDatabase admin \
+                        --eval "db.adminCommand('ping')" >/dev/null 2>&1; do
+              echo "waiting for mongo"
+              sleep 3
+            done
+            echo "MongoDB is up!"
       containers:
       - name: mongo-express
         image: {{ .Values.mongoexpressImage }}
