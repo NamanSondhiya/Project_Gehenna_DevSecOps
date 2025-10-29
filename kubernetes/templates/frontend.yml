@@ -12,6 +12,10 @@ spec:
       labels:
         app: gehenna-frontend
     spec:
+      initContainers:
+      - name: wait-for-backend
+        image: busybox
+        command: ["sh", "-c", "until nc -z gehenna-backend 8002; do echo waiting for backend; sleep 3; done"]
       containers:
         - name: gehenna-frontend
           image: {{ .Values.frontendImage }}
