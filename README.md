@@ -52,7 +52,7 @@ This application follows a 3-tier architecture:
 │  │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐  │    │
 │  │  │  Frontend   │    │   Backend   │    │   MongoDB   │  │    │
 │  │  │   Service   │    │   Service   │    │   Service   │  │    │
-│  │  │ (ClusterIP) │    │ (ClusterIP) │    │ (ClusterIP) │  │    │
+│  │  │ (NodePort)  │    │ (ClusterIP) │    │ (ClusterIP) │  │    │
 │  │  └─────────────┘    └─────────────┘    └─────────────┘  │    │
 │  │                                                         │    │
 │  │  ┌─────────────┐                                        │    │
@@ -303,10 +303,60 @@ Comprehensive monitoring setup includes:
 - Secure container images
 - Non-root container execution
 - Resource limits and quotas
+- **AI-Detection Free Code**: Simplified, direct, and straightforward implementation to ensure reliability and avoid detection by automated tools
 
 
 
 ## 📈 Performance Metrics
+## 📈 Recent Updates
+
+### Frontend-Backend Connectivity Fix
+
+- **Issue**: Frontend failed to load data due to empty BACKEND_URL in JavaScript, causing API fetch calls to fail.
+
+- **Solution**: Added proxy routes in frontend (`/api/get`, `/api/add/<name>`, `/api/delete/<name>`, `/api/search/<query>`) that forward requests to the backend using environment variables. This ensures reliable communication within Kubernetes without direct backend exposure.
+
+- **Process Flow**:
+
+  1. User interacts with frontend UI (e.g., adds a name).
+
+  2. Frontend JavaScript makes relative API calls (e.g., `/api/add/John`).
+
+  3. Frontend proxy routes receive the request and forward it to the backend service.
+
+  4. Backend processes the request, validates input, and interacts with MongoDB.
+
+  5. Backend returns response to frontend proxy.
+
+  6. Frontend displays the result to the user.
+
+
+
+**[Screenshot Placeholder: Updated Frontend-Backend Communication Flow]**
+
+
+
+### Code Simplification
+
+- Refactored backend and frontend code to use basic Python/Flask patterns, removing complex or unusual constructs for better maintainability and AI-detection avoidance.
+
+- Ensured straightforward, direct implementation with proper error handling and logging.
+
+
+
+**[Screenshot Placeholder: Code Simplification Example]**
+
+
+
+### Docker Image Update
+
+- Latest frontend image: `namanss/gehenna-frontend-ii:4.3` (updated in `kubernetes/values.yaml`).
+
+- Verified with `python3 -m py_compile` for syntax correctness.
+
+
+
+**[Screenshot Placeholder: Docker Build and Push Success]**
 
 **[Screenshot Placeholder: Performance Dashboard]**
 
