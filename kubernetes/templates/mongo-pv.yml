@@ -2,9 +2,8 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: mongo-pv
-  namespace: {{ .Values.namespace }}
-  annotations:
-    "helm.sh/hook": pre-install
+  # annotations:
+  #   "helm.sh/hook": pre-install
 spec:
     capacity:
         storage: 2Gi
