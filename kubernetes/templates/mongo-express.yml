@@ -12,6 +12,10 @@ spec:
       labels:
         app: mongo-express
     spec:
+      initContainers:
+      - name: wait-for-mongodb
+        image: busybox
+        command: ['sh', '-c', 'until nc -z mongo 27017; do echo waiting for mongo; sleep 3; done']
       containers:
       - name: mongo-express
         image: {{ .Values.mongoexpressImage }}
