@@ -1,8 +1,13 @@
 namespace: gehenna
+
 frontendImage: docker.io/namanss/gehenna-frontend-ii:4.0
 frontendsvc: NodePort
-FNodePort: "30013"
+FNodePort: 30013
 
 backendImage: docker.io/namanss/gehenna-backend-ii:4.0
+
 mongoexpressImage: docker.io/mongo-express:1.0.2-20-alpine3.19
+mongoexpresssvc: NodePort
+MEPort: 30014
+
 mongoImage: docker.io/mongo:noble

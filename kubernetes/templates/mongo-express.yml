@@ -21,11 +21,11 @@ spec:
         image: {{ .Values.mongoexpressImage }}
         ports:
         - containerPort: 8081
-        envFrom:
-        - configMapRef:
-            name: gehenna-config
-        - secretRef:
-            name: gehenna-secrets
+        # envFrom:
+        # - configMapRef:
+        #     name: gehenna-config
+        # - secretRef:
+        #     name: gehenna-secrets
         env:
         - name: ME_CONFIG_SITE_BASEURL
           value: "/mongo-express"
@@ -71,5 +71,6 @@ spec:
   ports:
   - port: 8081
     targetPort: 8081
-  type: ClusterIP
+    NodePort: {{ .Values.MEPort }}
+  type: {{ .Values.mongoexpresssvc }}
 
