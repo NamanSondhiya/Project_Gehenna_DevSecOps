@@ -14,7 +14,7 @@ spec:
     spec:
       initContainers:
       - name: wait-for-mongo
-        image: mongo:noble
+        image: {{ .Values.mongoImage }}
         command:
           - sh
           - -c
