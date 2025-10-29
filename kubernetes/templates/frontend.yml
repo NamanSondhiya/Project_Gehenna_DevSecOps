@@ -40,4 +40,4 @@ spec:
   ports:
     - port: 8001
       targetPort: 8001
-  type: ClusterIP
+  type: {{ .Values.frontendsvc }}
