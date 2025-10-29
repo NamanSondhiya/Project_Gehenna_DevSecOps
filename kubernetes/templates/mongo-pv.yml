@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
     capacity:
-        storage: 4Gi
+        storage: 3Gi
     accessModes:
       - ReadWriteOnce
     persistentVolumeReclaimPolicy: Retain
