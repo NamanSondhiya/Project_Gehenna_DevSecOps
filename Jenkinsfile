@@ -4,7 +4,7 @@ pipeline {
     parameters {
         string(name: 'IMAGE_TAG_F', defaultValue: '', description: 'Enter the Frontend Docker image tag')
         string(name: 'IMAGE_TAG_B', defaultValue: '', description: 'Enter the Backend Docker image tag')
-        booleanParam(name: 'Deploy_with_DockerCompose', defaultValue: false, description: 'Deploys Docker Image Locally with docker compose')
+        // booleanParam(name: 'Deploy_with_DockerCompose', defaultValue: false, description: 'Deploys Docker Image Locally with docker compose')
         booleanParam(name: 'Push_to_DockerHub', defaultValue: false, description: 'Uploads the Image to the Docker Hub') 
     }
     environment {
@@ -125,16 +125,16 @@ pipeline {
                 }
             }
         }
-        stage('Deploy with Docker-Compose') {
-            when {
-                expression { params.Deploy_with_DockerCompose }
-            }
-            steps {
-                script {
-                    docker_compose()
-                }
-            }
-        }
+        // stage('Deploy with Docker-Compose') {
+        //     when {
+        //         expression { params.Deploy_with_DockerCompose }
+        //     }
+        //     steps {
+        //         script {
+        //             docker_compose()
+        //         }
+        //     }
+        // }
     }
     post {
         always {
