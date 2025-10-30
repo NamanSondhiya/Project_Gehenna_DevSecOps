@@ -170,15 +170,16 @@ The application is deployed on Amazon EKS using Helm charts with the following c
 
 #### Prerequisites
 - Amazon EKS cluster
-- kubectl configured
-- Helm 3.x installed
+- eksctl 
+- kubectl 
+- Helm 3 
 - ArgoCD installed on cluster
 
 #### Deployment Steps
 
 1. **Deploy using Helm**
    ```bash
-   helm install gehenna ./kubernetes -n gehenna --create-namespace
+   helm install gehenna ./kubernetes -n default
    ```
 
 2. **Verify deployment**
