@@ -6,25 +6,31 @@ metadata:
   labels:
     name: app-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - host: testedpredi.com
+    - host: alibaba.com
       http:
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: gehenna-frontend
-              port:
-                number: 8001
-        - path: /db
-          pathType: Prefix
-          backend:
-            service:
-              name: mongo-express
-              port:
-                number: 8081
-        
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gehenna-frontend
+                port:
+                  number: 8001
+        #   - path: /health
+        #     pathType: Prefix
+        #     backend:
+        #       service:
+        #         name: gehenna-backend
+        #         port:
+        #           number: 8002
+        #   - path: /api/get
+        #     pathType: Prefix
+        #     backend:
+        #       service:
+        #         name: gehenna-backend
+        #         port:
+        #           number: 8002
