@@ -10,7 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - host: alibaba.com
+    - host: alibaba.com # change this to your domain or configure your /etc/hosts for testing with the IP and this domain
       http:
         paths:
           - path: /
