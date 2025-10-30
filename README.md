@@ -1,92 +1,48 @@
 # Gehenna - Enterprise 3-Tier Flask Application
 
-A production-grade 3-tier web application demonstrating modern DevSecOps practices with Flask, MongoDB, and Amazon EKS deployment. Built as a comprehensive showcase of cloud-native development and deployment methodologies.
+Gehenna is a robust 3-tier web application built with Flask and MongoDB, showcasing DevSecOps practices in a cloud-native setup on Amazon EKS. It serves as a practical example of modern development methodologies, from local prototyping to production deployment.
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
-This application follows a 3-tier architecture:
-- **Frontend**: Flask web application serving the user interface
-- **Backend**: Flask REST API handling business logic
-- **Database**: MongoDB for data persistence
-- **Admin Interface**: Mongo Express for database management
+The application adopts a classic 3-tier structure: a Flask-based frontend for the user interface, a RESTful backend API for business logic, and MongoDB as the database layer. Mongo Express provides a web-based admin interface for database management. In Kubernetes, components are containerized and orchestrated within the `gehenna` namespace, utilizing services for internal communication and ConfigMaps/Secrets for configuration.
 
-### Kubernetes Deployment Architecture
+Key elements include Pods for running containers, Services for load balancing, and Helm charts for streamlined deployment.
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        Amazon EKS Cluster                       │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │                   gehenna namespace                     │    │
-│  │                                                         │    │
-│  │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐  │    │
-│  │  │  Frontend   │    │   Backend   │    │  Database   │  │    │
-│  │  │    Pod      │◄──►│     Pod     │◄──►│     Pod     │  │    │
-│  │  │             │    │             │    │             │  │    │
-│  │  └─────────────┘    └─────────────┘    └─────────────┘  │    │
-│  │         │                   │                   │       │    │
-│  │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐  │    │
-│  │  │  Frontend   │    │   Backend   │    │   MongoDB   │  │    │
-│  │  │   Service   │    │   Service   │    │   Service   │  │    │
-│  │  │ (NodePort)  │    │ (ClusterIP) │    │ (ClusterIP) │  │    │
-│  │  └─────────────┘    └─────────────┘    └─────────────┘  │    │
-│  │                                                         │    │
-│  │  ┌─────────────┐                                        │    │
-│  │  │Mongo Express│                                        │    │
-│  │  │    Pod      │                                        │    │
-│  │  │             │                                        │    │
-│  │  └─────────────┘                                        │    │
-│  │         │                                               │    │
-│  │  ┌─────────────┐                                        │    │
-│  │  │Mongo Express│                                        │    │
-│  │  │   Service   │                                        │    │
-│  │  │ (ClusterIP) │                                        │    │
-│  │  └─────────────┘                                        │    │
-│  └─────────────────────────────────────────────────────────┘    │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │                 ConfigMaps & Secrets                    │    │
-│  │  • Environment Variables                                │    │
-│  │  • Database Credentials                                 │    │
-│  │  • Service Configuration                                │    │
-│  └─────────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌──────────────┐
+│   Frontend  │     │   Backend   │     │   MongoDB   │     │ Mongo Express│
+│    Service  │◄───►│   Service   │◄───►│   Service   │     │   Service    │
+│             │     │             │     │             │     │              │
+│   Frontend  │     │   Backend   │     │   MongoDB   │     │ Mongo Express│
+│     Pod     │     │     Pod     │     │     Pod     │     │     Pod      │
+└─────────────┘     └─────────────┘     └─────────────┘     └──────────────┘
+       ↑                   ↑                   ↑                   ↑
+   User Access       API Calls         Data Ops         Admin Access
 ```
 
-**Key Kubernetes Components:**
-- **Pods**: Containerized application instances
-- **Services**: Internal load balancing and service discovery
-- **ConfigMaps**: Environment configuration
-- **Secrets**: Sensitive data like database credentials
-- **Namespace**: Isolated environment (`gehenna`)
-- **Helm Chart**: Package management for deployment
+## Features
 
-## 🚀 Features
+- Full CRUD operations for name management with real-time updates
+- RESTful API with error handling and input validation
+- Security measures like CORS support and structured logging
+- Health checks for monitoring
+- Scalable microservices design
 
-- **Dynamic Name Management**: Complete CRUD operations with real-time data handling
-- **RESTful API Architecture**: Production-ready endpoints with comprehensive error handling
-- **Enterprise Security**: Multi-layer input validation and data sanitization
-- **Health Monitoring**: Advanced health check endpoints for production monitoring
-- **Cross-Origin Support**: Configurable CORS for multi-domain deployments
-- **Structured Logging**: Enterprise-grade logging with detailed request tracking
-- **Scalable Design**: Microservices architecture ready for horizontal scaling
-
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **Frontend**: Flask, HTML, CSS, JavaScript
 - **Backend**: Flask, Python
 - **Database**: MongoDB
 - **Containerization**: Docker
 - **Orchestration**: Kubernetes (Amazon EKS)
-- **Package Management**: Helm Charts
-- **CI/CD**: Jenkins with Shared Libraries
-- **GitOps**: ArgoCD
+- **CI/CD**: Jenkins with shared libraries, ArgoCD for GitOps
 - **Monitoring**: Kube-Prometheus-Stack
-- **Security**: OWASP Dependency Check, Trivy, SonarQube
+- **Security**: SonarQube, OWASP Dependency Check, Trivy
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-gehenna_2.0/
+Project_Gehenna_DevSecOps/
 ├── backend/                 # Backend Flask API
 │   ├── app.py              # Main application
 │   ├── connection.py       # Database connection
@@ -108,337 +64,84 @@ gehenna_2.0/
 └── sonar-project.properties # SonarQube config
 ```
 
-## 🔧 Local Development
+## Local Development
 
-### Prerequisites
-- Docker and Docker Compose
-- Python 3.9+
-- Node.js (for development tools)
+To run the application locally, ensure you have Docker, Docker Compose, Python 3.9+, and Node.js installed.
 
-### Quick Start
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/NamanSondhiya/Project_Gehenna_DevSecOps.git
-   cd Project_Gehenna
-   ```
-
-2. **Start with Docker Compose**
-   ```bash
-   docker-compose up -d
-   ```
-
-3. **Access the application**
+1. Clone the repo: `git clone https://github.com/NamanSondhiya/Project_Gehenna_DevSecOps.git && cd Project_Gehenna_DevSecOps`
+2. Launch with Docker Compose: `docker-compose up -d`
+3. Access at:
    - Frontend: http://localhost:8001
    - Backend API: http://localhost:8002
    - Mongo Express: http://localhost:8081
 
-**[Screenshot Placeholder: Local Development Setup]**
+## Production Deployment
 
-## 🏭 Production Deployment
+Deploy to Amazon EKS using Helm. Prerequisites: EKS cluster, eksctl, kubectl, Helm 3, ArgoCD.
 
-### Amazon EKS Deployment
+1. Install the chart: `helm install gehenna ./kubernetes -n default`
+2. Check status: `kubectl get pods -n gehenna && kubectl get services -n gehenna`
 
-**[Screenshot Placeholder: EKS Cluster Overview]**
+## CI/CD Pipeline
 
-The application is deployed on Amazon EKS using Helm charts with the following components:
+The Jenkins pipeline enforces DevSecOps through stages like parameter validation, code quality checks with SonarQube, security scans via OWASP and Trivy, Docker builds, and artifact management. It integrates shared libraries for reusable functions and triggers ArgoCD for automated deployments.
 
-#### Prerequisites
-- Amazon EKS cluster
-- eksctl 
-- kubectl 
-- Helm 3 
-- ArgoCD installed on cluster
+ArgoCD handles GitOps, syncing changes automatically, monitoring health, and supporting rollbacks with email notifications.
 
-#### Deployment Steps
+## Monitoring & Observability
 
-1. **Deploy using Helm**
-   ```bash
-   helm install gehenna ./kubernetes -n default
-   ```
+Using Kube-Prometheus-Stack, the setup collects metrics on application performance, infrastructure, and custom business data. Grafana provides dashboards for visualizing request rates, resource usage, and error tracking.
 
-2. **Verify deployment**
-   ```bash
-   kubectl get pods -n gehenna
-   kubectl get services -n gehenna
-   ```
+## Security Features
 
-**[Screenshot Placeholder: Kubernetes Pods Status]**
+Security is baked in with SAST via SonarQube, dependency checks, container scanning, secrets management in Kubernetes, network policies, and RBAC. Best practices include input sanitization, hardened images, and resource quotas.
 
-**[Screenshot Placeholder: Kubernetes Services]**
-
-## 🔄 CI/CD Pipeline
-
-### Jenkins CI Pipeline
-
-**[Screenshot Placeholder: Jenkins Pipeline Overview]**
-
-The CI pipeline implements DevSecOps best practices with the following stages:
-
-#### Pipeline Stages
-
-1. **Parameter Validation**
-   - Validates required image tags
-   - Ensures proper input format
-
-2. **Code Quality & Security**
-   - **SonarQube Analysis**: Code quality and security scanning
-   - **Quality Gate**: Enforces quality standards
-   - **OWASP Dependency Check**: Identifies vulnerable dependencies
-   - **Trivy Filesystem Scan**: Scans for secrets and vulnerabilities
-
-**[Screenshot Placeholder: SonarQube Dashboard]**
-
-**[Screenshot Placeholder: OWASP Dependency Check Results]**
-
-3. **Build & Security Scanning**
-   - **Parallel Docker Builds**: Frontend and backend images
-   - **Trivy Image Scanning**: Container vulnerability assessment
-   - **Multi-stage builds**: Optimized container images
-
-**[Screenshot Placeholder: Trivy Scan Results]**
-
-4. **Artifact Management**
-   - **DockerHub Push**: Conditional image publishing
-   - **Artifact Archiving**: Security reports and build artifacts
-   - **Email Notifications**: Automated notifications for build success/failure with security reports attached
-   - **CD Pipeline Trigger**: Automatically triggers GitOps deployment on successful CI build
-
-**[Screenshot Placeholder: DockerHub Repository]**
-
-#### Jenkins Shared Library Integration
-
-The pipeline leverages custom Jenkins shared libraries from [jenkins-trusted-libraries](https://github.com/NamanSondhiya/Jenkins-trusted-libraries.git):
-- `git_clone()`: Standardized Git operations
-- `sonarqube_analysis()`: SonarQube integration
-- `owasp_scan()`: OWASP dependency checking
-- `trivy_fs_scan()` & `trivy_image_scan()`: Security scanning
-- `docker_build()`, `docker_push()`: Container operations
-
-**[Screenshot Placeholder: Jenkins Shared Library Usage]**
-
-### ArgoCD GitOps
-
-**[Screenshot Placeholder: ArgoCD Application Dashboard]**
-
-Continuous Deployment is managed through ArgoCD with:
-- **Automated Sync**: Git-based deployment triggers
-- **Health Monitoring**: Application health status
-- **Rollback Capabilities**: Easy rollback to previous versions
-- **Email Notifications**: Build status notifications for both CI and CD pipelines
-
-
-**[Screenshot Placeholder: ArgoCD Sync Status]**
-
-**[Screenshot Placeholder: ArgoCD Application Health]**
-
-## 📊 Monitoring & Observability
-
-### Kube-Prometheus-Stack
-
-**[Screenshot Placeholder: Grafana Dashboard Overview]**
-
-Comprehensive monitoring setup includes:
-
-#### Prometheus Metrics
-- Application performance metrics
-- Infrastructure monitoring
-- Custom business metrics
-- Alert rules and thresholds
-
-**[Screenshot Placeholder: Prometheus Targets]**
-
-#### Grafana Dashboards
-- **Application Dashboard**: Request rates, response times, error rates
-- **Infrastructure Dashboard**: CPU, memory, disk, network usage
-- **Business Dashboard**: User activity, feature usage
-
-**[Screenshot Placeholder: Application Metrics Dashboard]**
-
-**[Screenshot Placeholder: Infrastructure Monitoring Dashboard]**
-
-
-
-## 🔒 Security Features
-
-### DevSecOps Implementation
-
-**[Screenshot Placeholder: Security Scan Summary]**
-
-- **Static Application Security Testing (SAST)**: SonarQube integration
-- **Dependency Scanning**: OWASP Dependency Check
-- **Container Security**: Trivy vulnerability scanning
-- **Secrets Management**: Kubernetes secrets and environment variables
-- **Network Policies**: Kubernetes network segmentation
-- **RBAC**: Role-based access control
-
-### Security Best Practices
-
-- Multi-layer input validation and sanitization
-- Production-grade CORS configuration
-- Comprehensive health check endpoints
-- Hardened container images with minimal attack surface
-- Non-privileged container execution
-- Resource limits and security quotas
-- Clean, maintainable code following industry standards
-
-
-
-## 📈 Performance Metrics
-## 📈 Recent Updates
-
-### Frontend-Backend Connectivity Fix
-
-- **Issue**: Frontend failed to load data due to empty BACKEND_URL in JavaScript, causing API fetch calls to fail.
-
-- **Solution**: Added proxy routes in frontend (`/api/get`, `/api/add/<name>`, `/api/delete/<name>`, `/api/search/<query>`) that forward requests to the backend using environment variables. This ensures reliable communication within Kubernetes without direct backend exposure.
-
-- **Process Flow**:
-
-  1. User interacts with frontend UI (e.g., adds a name).
-
-  2. Frontend JavaScript makes relative API calls (e.g., `/api/add/John`).
-
-  3. Frontend proxy routes receive the request and forward it to the backend service.
-
-  4. Backend processes the request, validates input, and interacts with MongoDB.
-
-  5. Backend returns response to frontend proxy.
-
-  6. Frontend displays the result to the user.
-
-
-
-**[Screenshot Placeholder: Updated Frontend-Backend Communication Flow]**
-
-
-
-### Architecture Optimization
-
-- Implemented clean Python/Flask patterns following industry best practices
-- Optimized for maintainability with clear separation of concerns
-- Enhanced error handling and comprehensive logging throughout the application stack
-- Streamlined deployment process with automated testing and validation
-
-
-
-### Docker Image Update
-
-- Latest frontend image: `namanss/gehenna-frontend-ii:4.3` (updated in `kubernetes/values.yaml`).
-
-- Verified with `python3 -m py_compile` for syntax correctness.
-
-
-
-**[Screenshot Placeholder: Docker Build and Push Success]**
-
-**[Screenshot Placeholder: Performance Dashboard]**
-
-Key performance indicators:
-- **Response Time**: Average API response time
-- **Throughput**: Requests per second
-- **Error Rate**: Percentage of failed requests
-- **Availability**: Uptime percentage
-- **Resource Utilization**: CPU, memory, storage usage
-
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
-#### Frontend
-- `BACKEND_URL`: Backend service URL
-- `PORT`: Frontend service port
-- `HOST`: Bind address
+- **Frontend**: BACKEND_URL, PORT, HOST
+- **Backend**: MONGO_URL, PORT, HOST, FRONTEND_ORIGINS
 
-#### Backend
-- `MONGO_URL`: MongoDB connection string
-- `PORT`: Backend service port
-- `HOST`: Bind address
-- `FRONTEND_ORIGINS`: CORS allowed origins
+### Helm Values
 
-### Kubernetes Configuration
+Customize via `values.yaml` for images, namespace, etc.
 
-The Helm chart supports customization through `values.yaml`:
+## Testing
 
-```yaml
-namespace: gehenna
-frontendImage: docker.io/namanss/gehenna-frontend-ii:4.3
-backendImage: docker.io/namanss/gehenna-backend-ii:4.0
-mongoexpressImage: docker.io/mongo-express:1.0.2-20-alpine3.19
-mongoImage: docker.io/mongo:latest
-```
+Test the API endpoints:
 
-## 🧪 Testing
-
-**[Screenshot Placeholder: Test Results]**
-
-### API Testing
 ```bash
-# Health check
 curl http://<public-ip>:8002/health
-
-# Get all names
 curl http://<public-ip>:8002/api/get
-
-# Add a name
 curl -X POST http://<public-ip>:8002/api/add/Naman
-
-# Search names
 curl http://<public-ip>:8002/api/search/Naman
 ```
 
-## 📝 API Documentation
+## API Documentation
 
-### Endpoints
+| Method | Endpoint          | Description          |
+|--------|-------------------|----------------------|
+| GET    | `/`               | Service status       |
+| GET    | `/health`         | Health check         |
+| GET    | `/api/get`        | Retrieve all names   |
+| POST   | `/api/add/<name>` | Add a name           |
+| DELETE | `/api/delete/<name>` | Delete a name     |
+| GET    | `/api/search/<query>` | Search names      |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/` | Service status |
-| GET | `/health` | Health check |
-| GET | `/api/get` | Retrieve all names |
-| POST | `/api/add/<name>` | Add a new name |
-| DELETE | `/api/delete/<name>` | Delete a name |
-| GET | `/api/search/<query>` | Search names |
+## License
 
-## 🤝 Professional Collaboration
+MIT License.
 
-This project demonstrates enterprise-level development practices and is available for:
-- **Code Review**: Professional assessment and feedback
-- **Consultation**: DevSecOps implementation guidance
-- **Custom Development**: Similar enterprise solutions
-- **Training**: Hands-on DevSecOps workshops
+## Developer
 
-For collaboration opportunities, please reach out via email.
+**Naman Sondhiya** - Full Stack DevSecOps Engineer  
+Email: ssnaman4@gmail.com  
+Focus: Cloud-native apps, DevSecOps, Kubernetes.
 
-## 📄 License
+## Project Links
 
-This project is licensed under the MIT License.
+- [Source Code](https://github.com/NamanSondhiya/Project_Gehenna_DevSecOps)
+- [Container Registry](https://hub.docker.com/u/namanss)
+- [Shared Libraries](https://github.com/NamanSondhiya/Jenkins-trusted-libraries)
 
-## 👨‍💻 Developer
-
-**Naman Sondhiya** - Full Stack DevSecOps Engineer
-- **Email**: ssnaman4@gmail.com
-- **Specialization**: Cloud-native applications, DevSecOps automation, Kubernetes orchestration
-- **Focus**: Enterprise-grade solutions with security-first approach
-
-## 🔗 Project Links
-
-- **Source Code**: https://github.com/NamanSondhiya/Project_Gehenna_DevSecOps
-- **Container Registry**: https://hub.docker.com/u/namanss
-- **CI Repository**: https://github.com/NamanSondhiya/Project_Gehenna_DevSecOps
-- **Shared Libraries**: https://github.com/NamanSondhiya/Jenkins-trusted-libraries
-
----
-
-## 📋 Project Highlights
-
-This project showcases:
-- **Enterprise Architecture**: Scalable 3-tier design with microservices principles
-- **DevSecOps Excellence**: Comprehensive security scanning and automated deployment
-- **Cloud-Native Deployment**: Production-ready Kubernetes orchestration
-- **Monitoring Integration**: Full observability stack with Prometheus and Grafana
-- **Professional Standards**: Industry best practices and clean code principles
-
----
-
-**Professional Contact**: For enterprise solutions, consulting, or collaboration opportunities, please reach out to discuss your requirements.
