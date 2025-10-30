@@ -6,11 +6,11 @@ metadata:
   labels:
     name: app-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-    - host: testforall.com
+    - host: testedpredi.com
       http:
         paths:
         - path: /
