@@ -6,8 +6,7 @@ FNodePort: 30888
 
 backendImage: docker.io/namanss/gehenna-backend-ii:4.0
 
-mongoexpressImage: docker.io/mongo-express:1.0.2-20-alpine3.19
+mongoexpressImage: docker.io/mongo-express:1.0-20-alpine3.19
 MEsvc: ClusterIP
-MEPort: 30800
 
 mongoImage: docker.io/mongo:latest

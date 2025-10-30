@@ -4,6 +4,12 @@ metadata:
   name: mongo-express
   namespace: {{ .Values.namespace }}
 spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: mongo-express
@@ -45,14 +51,14 @@ spec:
           image: {{ .Values.mongoexpressImage }}
           ports:
             - containerPort: 8081
-          # envFrom:
-          # - configMapRef:
-          #     name: gehenna-config
-          # - secretRef:
-          #     name: gehenna-secrets
+          envFrom:
+          - configMapRef:
+              name: gehenna-config
+          - secretRef:
+              name: gehenna-secrets
           env:
             - name: ME_CONFIG_SITE_BASEURL
-              value: "/mongo-express"
+              value: "/db"
             - name: ME_CONFIG_MONGODB_SERVER
               valueFrom:
                 configMapKeyRef:
