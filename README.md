@@ -4,31 +4,6 @@ A production-grade 3-tier web application demonstrating modern DevSecOps practic
 
 ## 🏗️ Architecture Overview
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│                 │    │                 │    │                 │
-│   Frontend      │    │   Backend       │    │   Database      │
-│   (Flask)       │◄──►│   (Flask API)   │◄──►│   (MongoDB)     │
-│   Port: 8001    │    │   Port: 8002    │    │   Port: 27017   │
-│                 │    │                 │    │                 │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-                    ┌─────────────────┐
-                    │                 │
-                    │  Mongo Express  │
-                    │  (Admin UI)     │
-                    │  Port: 8081     │
-                    │                 │
-                    └─────────────────┘
-```
-
-**[Screenshot Placeholder: Local Architecture Diagram]**
-
-**[Screenshot Placeholder: Kubernetes Architecture Diagram]**
-
 This application follows a 3-tier architecture:
 - **Frontend**: Flask web application serving the user interface
 - **Backend**: Flask REST API handling business logic
@@ -144,7 +119,7 @@ gehenna_2.0/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/NamanSondhiya/Project_Gehenna.git
+   git clone https://github.com/NamanSondhiya/Project_Gehenna_DevSecOps.git
    cd Project_Gehenna
    ```
 
